@@ -1,0 +1,26 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "1158f469-c938-4b80-91e7-68bc5f09172b",
+  "alias": "Aniversariantes2WebPart",
+  "componentType": "WebPart",
+
+
+  "version": "*",
+  "manifestVersion": 2,
+
+
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Advanced" },
+    "title": { "default": "Aniversariantes2" },
+    "description": { "default": "Aniversariantes2 description" },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "description": "Aniversariantes2"
+    }
+  }]
+}

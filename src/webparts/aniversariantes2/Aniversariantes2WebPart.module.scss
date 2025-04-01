@@ -1,0 +1,92 @@
+Aniversariantes .scss
+
+
+
+.aniversariantes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.tituloAniversariantes {
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.subTituloAniversariantes {
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.aniversarianteCard {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px;
+  width: 312.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  position: relative;
+}
+
+.foto {
+  width: 49.47px;
+  height: 49.47px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.nome {
+  font-weight: bold;
+  font-size: 10px;
+  color: black;
+  margin-bottom: 4px;
+}
+
+.cargo {
+  font-size: 10px;
+  color: black;
+  opacity: 0.5;
+  margin-bottom: 8px;
+}
+
+.mensagem {
+  font-size: 10px;
+  color: black;
+  display: block;
+}
+
+.staticon {
+  width: 25%;
+  background-color: #e3e9f0 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.icone {
+  width: 24px;
+  height: 24px;
+}

@@ -1,0 +1,64 @@
+.banner {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 300px;
+  background-image: url('./assets/banner.jpg'), linear-gradient(135deg, #004aad, #00aaff);
+  background-size: cover;
+  background-position: center -225px;
+  background-repeat: no-repeat;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background-color: #088cd4; /* Linha vertical */
+  }
+  
+  .banner::after { /* Usando ::after para a opacidade para não conflitar com o ::before da linha */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Opacidade */
+  }
+
+.textContainer {
+  margin-bottom: 20px;
+}
+
+.welcomeText {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subText {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .banner {
+    height: 200px; /* Altura menor para telas menores */
+  }
+  .welcomeText {
+    font-size: 24px;
+  }
+  .subText {
+    font-size: 14px;
+  }
+}}

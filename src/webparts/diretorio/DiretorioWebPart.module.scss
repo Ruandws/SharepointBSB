@@ -1,0 +1,159 @@
+.diretorio {
+  background-color: #0d4c8f;
+  color: white;
+  padding: 20px;
+
+  .welcome {
+    text-align: left;
+    margin-bottom: 10px;
+
+    .welcomeTitle {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .welcomeSubtitle {
+      opacity: 0.5;
+      margin-bottom: 15px;
+      margin-top: 2px;
+    }
+  }
+
+  .searchContainer {
+    text-align: left;
+
+    .searchInput {
+      width: 250px;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      color: #333;
+
+      &::placeholder {
+        opacity: 0.5;
+        color: #666;
+      }
+    }
+  }
+
+  .peopleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .peopleCards {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px 0;
+    gap: 15px;
+  }
+
+  .personCard {
+    flex: 0 0 auto;
+    width: 200px;
+    background-color: #0d4c8f;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    color: white;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .personPhoto {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 14px;
+      margin: 0 0 5px;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    p {
+      font-size: 12px;
+      margin: 3px 0;
+      opacity: 0.9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .navButton {
+    background: none;
+    color: white;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+    margin: 0 10px;
+    flex-shrink: 0;
+
+    &:hover {
+      color: #ccc;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .error {
+    color: white;
+    background-color: #ff5252;
+    padding: 15px;
+    border-radius: 4px;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+
+  .retryButton {
+    background: white;
+    color: #0d4c8f;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  
+
+    &:hover {
+      background: #e6e6e6;
+    }}
+}
+
+/* Responsividade mínima para evitar quebra */
+@media (max-width: 480px) {
+  .diretorio {
+    padding: 15px;
+
+    .searchContainer .searchInput {
+      width: 100%;
+      max-width: 250px;
+    }
+
+    .personCard {
+      width: 180px;
+    }
+  }
+}

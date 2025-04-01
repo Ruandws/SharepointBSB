@@ -1,0 +1,46 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "diretorio-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/diretorio/DiretorioWebPart.js",
+          "manifest": "./src/webparts/diretorio/DiretorioWebPart.manifest.json"
+        }
+      ]
+    },
+    "aniversariantes-2-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/aniversariantes2/Aniversariantes2WebPart.js",
+          "manifest": "./src/webparts/aniversariantes2/Aniversariantes2WebPart.manifest.json"
+        }
+      ]
+    },
+    "boasvindas-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/boasvindas/BoasvindasWebPart.js",
+          "manifest": "./src/webparts/boasvindas/BoasvindasWebPart.manifest.json"
+        }
+      ]
+    },
+    "menu-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/menu/MenuWebPart.js",
+          "manifest": "./src/webparts/menu/MenuWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  
+  "externals": {},
+  "localizedResources": {
+    "DiretorioWebPartStrings": "lib/webparts/diretorio/loc/{locale}.js",
+    "Aniversariantes2WebPartStrings": "lib/webparts/aniversariantes2/loc/{locale}.js",
+    "BoasvindasWebPartStrings": "lib/webparts/boasvindas/loc/{locale}.js",
+    "MenuWebPartStrings": "lib/webparts/menu/loc/{locale}.js"
+  }
+}
