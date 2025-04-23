@@ -1,73 +1,86 @@
-# parts
+📦 SharePoint WebParts - Projeto Corporativo
+Este repositório contém a solução principal de WebParts para SharePoint Online, distribuída como um pacote .sppkg. As WebParts aqui desenvolvidas são utilizadas em diversos sites institucionais da empresa, oferecendo funcionalidades como diretório de pessoas, aniversariantes, comunicação interna e muito mais.
 
-## Summary
+🛠️ Estrutura do Projeto
+A raiz do projeto contém:
 
-Short summary on functionality and used technologies.
+Código-fonte das WebParts em TypeScript (SPFx - SharePoint Framework)
 
-[picture of the solution in action, if possible]
+Arquivos de configuração do Visual Studio Code
 
-## Used SharePoint Framework Version
+Scripts de build e deploy (gulp, npm)
 
-![version](https://img.shields.io/badge/version-1.20.0-green.svg)
+Arquivo .sppkg gerado para publicação no App Catalog do SharePoint
 
-## Applies to
+⚙️ Configuração do Ambiente de Desenvolvimento
+1. Pré-requisitos
+Node.js (v14.x ou v16.x, compatível com SPFx)
 
-- [SharePoint Framework](https://aka.ms/spfx)
-- [Microsoft 365 tenant](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-developer-tenant)
+npm ou Yarn
 
-> Get your own free development tenant by subscribing to [Microsoft 365 developer program](http://aka.ms/o365devprogram)
+Visual Studio Code
 
-## Prerequisites
+Yeoman e SharePoint Generator
 
-> Any special pre-requisites?
+Instalação recomendada:
 
-## Solution
+bash
+Copiar
+Editar
+npm install -g yo gulp
+npm install -g @microsoft/generator-sharepoint
+2. Clonando o repositório
+bash
+Copiar
+Editar
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+3. Instalando dependências
+Com npm:
 
-| Solution    | Author(s)                                               |
-| ----------- | ------------------------------------------------------- |
-| folder name | Author details (name, company, twitter alias with link) |
+bash
+Copiar
+Editar
+npm install
+Ou com yarn:
 
-## Version history
+bash
+Copiar
+Editar
+yarn install
+🚀 Comandos úteis de desenvolvimento
 
-| Version | Date             | Comments        |
-| ------- | ---------------- | --------------- |
-| 1.1     | March 10, 2021   | Update comment  |
-| 1.0     | January 29, 2021 | Initial release |
+Comando	Descrição
+gulp serve	Inicia o servidor de desenvolvimento (localhost:4321)
+gulp build	Compila o projeto
+gulp bundle --ship	Cria os arquivos prontos para produção
+gulp package-solution --ship	Gera o arquivo .sppkg para deploy
+gulp clean	Limpa artefatos da build
+gulp trust-dev-cert	Confia no certificado de dev local
+✅ Publicando no SharePoint Online
+Após rodar:
 
-## Disclaimer
+bash
+Copiar
+Editar
+gulp bundle --ship
+gulp package-solution --ship
+O arquivo será gerado na pasta:
 
-**THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+bash
+Copiar
+Editar
+sharepoint/solution/*.sppkg
+Publique esse pacote no App Catalog do seu tenant SharePoint.
 
----
+💡 Dicas de Git
 
-## Minimal Path to Awesome
-
-- Clone this repository
-- Ensure that you are at the solution folder
-- in the command-line run:
-  - **npm install**
-  - **gulp serve**
-
-> Include any additional steps as needed.
-
-## Features
-
-Description of the extension that expands upon high-level summary above.
-
-This extension illustrates the following concepts:
-
-- topic 1
-- topic 2
-- topic 3
-
-> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
-
-> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
-
-## References
-
-- [Getting started with SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-developer-tenant)
-- [Building for Microsoft teams](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/build-for-teams-overview)
-- [Use Microsoft Graph in your solution](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/get-started/using-microsoft-graph-apis)
-- [Publish SharePoint Framework applications to the Marketplace](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/publish-to-marketplace-overview)
-- [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development
+Comando	Ação
+git clone <repo>	Clona o repositório
+git pull	Atualiza sua branch local com as últimas mudanças
+git status	Mostra arquivos modificados
+git add .	Adiciona todas as alterações
+git commit -m "Mensagem"	Cria um commit
+git push	Envia as mudanças para o repositório remoto
+git checkout -b nome-da-branch	Cria uma nova branch
+git merge nome-da-branch	Mescla branch especificada com a atual
