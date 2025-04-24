@@ -1,9 +1,8 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
-  "id": "1158f469-c938-4b80-91e7-68bc5f09172b",
-  "alias": "Aniversariantes2WebPart",
+  "id": "3867f3de-3a21-41ab-8dd5-05fcd6133b0f",
+  "alias": "DashboardWebPart",
   "componentType": "WebPart",
-
 
   "version": "*",
   "manifestVersion": 2,
@@ -16,14 +15,11 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
     "group": { "default": "Advanced" },
-    "title": { "default": "Aniversariantes2" },
-    "description": { "default": "Aniversariantes2 description" },
+    "title": { "default": "Dashboard" },
+    "description": { "default": "Dashboard description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "Aniversariantes2",
-      "title" : "Aniversariantes do Mês"
+      "description": "Dashboard"
     }
   }]
-  
-  
 }

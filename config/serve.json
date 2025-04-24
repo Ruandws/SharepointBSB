@@ -2,5 +2,9 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
   "port": 4321,
   "https": true,
-  "initialPage": "https://lacerdapar.sharepoint.com/sites/BrasliaSeguranaSA/_layouts/15/workbench.aspx#"
+  "initialPage": "https://lacerdapar.sharepoint.com/sites/BrasliaPortal/_layouts/15/workbench.aspx",
+  "api": {
+    "port": 5432,
+    "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
+  }
 }

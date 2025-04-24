@@ -1,45 +1,48 @@
+.menuWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: #fff;
+}
 
 .menuContainer {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
   width: 100%;
+  max-width: 1200px;
 }
 
 .menuItemCard {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px 10px;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  flex: 1; /* Permite que todos os cards cresçam igualmente */
-  min-width: 50px;
-  margin: 5px;
-  padding: 10px;
-  background-color: #0d4c8f;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  color: white;
-  text-decoration: none;
-  transition: transform 0.3s ease;
-}
-
-.menuItemImagem {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-bottom: 5px;
-    background-color: transparent; /* Garante que o fundo da imagem seja transparente */
-    object-fit: cover; /* Garante que a imagem se ajuste bem ao contêiner */
-  }
-
-.menuItemNome {
-  font-weight: bold;
-  text-align: center;
-  font-size: 0.7em;
-  word-break: break-word; /* Permite quebras de palavra para textos longos */
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .menuItemCard:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.menuItemImagem {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  filter: brightness(0); // Deixa o ícone escuro (preto)
+}
+
+.menuItemNome {
+  font-size: 14px;
+  font-weight: 500;
 }

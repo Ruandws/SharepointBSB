@@ -1,183 +1,303 @@
 import { Version } from '@microsoft/sp-core-library';
 import {
-    IPropertyPaneConfiguration,
-    PropertyPaneTextField
+  IPropertyPaneConfiguration,
+  PropertyPaneTextField,
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { MSGraphClientV3 } from '@microsoft/sp-http';
-
-import styles from './Aniversariantes2WebPart.module.scss';
+import { SPHttpClient } from '@microsoft/sp-http';
 import * as strings from 'Aniversariantes2WebPartStrings';
+import styles from './Aniversariantes2WebPart.module.scss';
 
 export interface IAniversariantes2WebPartProps {
-    description: string;
+  title: string;
+  listName: string;
+  maxResults: number;
 }
 
-interface IAniversariante2 {
-    nome: string;
-    cargo: string;
-    fotoUrl: string;
-    dataAniversario: Date;
-    nomeDoAD?: string;
+interface IAniversariante {
+  nome: string;
+  cargo: string;
+  fotoUrl: string;
+  dataAniversario: Date;
+  isBirthdayToday: boolean;
+  mensagemAniversario: string;
+  iconeAniversario: string;
+  diasRestantes: number;
 }
 
-interface User {
-    displayName: string;
-    jobTitle: string;
-    birthday: string;
-    id: string;
-    userPrincipalName: string;
-}
-
-interface UsersResponse {
-    value: User[];
+interface ISPListItem {
+  Title: string;
+  field_1: number;
+  field_2: number;
+  field_3?: string;
 }
 
 export default class Aniversariantes2WebPart extends BaseClientSideWebPart<IAniversariantes2WebPartProps> {
+  private defaultPhotoUrl = require('./assets/pessoa.png');
+  private birthdayIconUrl = require('./assets/birthdaycake.png');
+  private ellipsisIconUrl = require('./assets/ellipsis.png');
+  private today = new Date();
+  private usuariosSemFoto: string[] = [];
 
-    private aniversariantes: IAniversariante2[] = [];
-
-    public async render(): Promise<void> {
-        try {
-            const graphClient: MSGraphClientV3 = await this.context.msGraphClientFactory.getClient("3");
-            await this.buscarAniversariantesDoAD(graphClient);
-        } catch (error) {
-            console.error("Erro ao obter dados do Graph API:", error);
-        }
-    }
-
-    private async buscarAniversariantesDoAD(graphClient: MSGraphClientV3): Promise<void> {
-        try {
-            const usersResponse: UsersResponse = await graphClient.api('/users').get();
-            const aniversariantesDoAD = usersResponse.value.map((user: User): IAniversariante2 => {
-                return {
-                    nome: user.displayName,
-                    cargo: user.jobTitle,
-                    fotoUrl: require('./assets/pessoa.png'),
-                    dataAniversario: new Date(user.birthday),
-                    nomeDoAD: user.userPrincipalName,
-                };
-            });
-
-            this.aniversariantes = aniversariantesDoAD;
-            await this.atualizarFotosDosAniversariantes(graphClient);
-        } catch (error) {
-            console.error("Erro ao buscar aniversariantes do AD:", error);
-        }
-    }
-
-    private async atualizarFotosDosAniversariantes(graphClient: MSGraphClientV3): Promise<void> {
-        const fotosPromises = this.aniversariantes.map(async (aniversariante: IAniversariante2) => {
-            try {
-                const photo: ArrayBuffer = await graphClient.api(`/users/${aniversariante.nomeDoAD}/photo/$value`).get();
-                const blob = new Blob([photo], { type: 'image/jpeg' });
-                return URL.createObjectURL(blob);
-            } catch (error) {
-                console.error(`Erro ao buscar foto para ${aniversariante.nomeDoAD}:`, error);
-                return aniversariante.fotoUrl; // Retorna a foto padrão em caso de erro
-            }
-        });
-
-        const fotos = await Promise.all(fotosPromises);
-
-        this.aniversariantes = this.aniversariantes.map((aniversariante, index) => {
-            return { ...aniversariante, fotoUrl: fotos[index] };
-        });
-
-        this.renderizarAniversariantes();
-    }
-
-    private renderizarAniversariantes(): void {
-        const aniversariantesHtml = this.aniversariantes
-            .sort((a, b) => a.dataAniversario.getTime() - b.dataAniversario.getTime())
-            .slice(0, 5)
-            .map((aniversariante, index) => this.renderAniversariante(aniversariante, index))
-            .join('');
-
-        this.domElement.innerHTML = `
-            <div class="${styles.aniversariantes}">
-                <div class="${styles.tituloAniversariantes}">Aniversariantes do Mês</div>
-                <div class="${styles.subTituloAniversariantes}">Brasília segurança</div>
-                ${aniversariantesHtml}
-            </div>
-        `;
-    }
-
-    private obterDataSemAno(data: Date): Date {
-        return new Date(new Date().getFullYear(), data.getMonth(), data.getDate());
-    }
-
-    private saoMesmoDia(data1: Date, data2: Date): boolean {
-        return (
-            data1.getDate() === data2.getDate() &&
-            data1.getMonth() === data2.getMonth()
-        );
-    }
-
-    private renderAniversariante(aniversariante: IAniversariante2, index: number): string {
-      const hoje = this.obterDataSemAno(new Date());
-      const amanha = new Date(hoje);
-      amanha.setDate(hoje.getDate() + 1);
-      const seteDiasDepois = new Date(hoje);
-      seteDiasDepois.setDate(hoje.getDate() + 7);
-  
-      const dataAniversario = this.obterDataSemAno(aniversariante.dataAniversario);
-  
-      let mensagem = '';
-      if (this.saoMesmoDia(dataAniversario, hoje)) {
-          mensagem = ' Feliz Aniversário!!';
-      } else if (this.saoMesmoDia(dataAniversario, amanha)) {
-          mensagem = 'Será';
-      } else if (dataAniversario > amanha && dataAniversario <= seteDiasDepois) {
-          const dias = Math.ceil((dataAniversario.getTime() - hoje.getTime()) / (1000 * 3600 * 24));
-          mensagem = ` Faltam ${dias} dias`;
-      }
-      const iconeUrl = this.saoMesmoDia(dataAniversario, hoje) ? require('./assets/birthdaycake.png') : require('./assets/ellipsis.png');
-  
-      // Lógica para extrair primeiro e último nome
-      const nomes = aniversariante.nome.split(' ');
-      const primeiroNome = nomes[0];
-      const ultimoNome = nomes.length > 1 ? nomes[nomes.length - 1] : '';
-      const nomeExibicao = ultimoNome ? `${primeiroNome} ${ultimoNome}` : primeiroNome;
-  
-      return `
-          <div class="${styles.aniversarianteCard}">
-              <img src="${aniversariante.fotoUrl}" alt="${nomeExibicao}" class="${styles.foto}">
-              <div class="${styles.info}">
-                  <div class="${styles.nome}">${nomeExibicao}</div>
-                  <div class="${styles.cargo}">${aniversariante.cargo}</div>
-                  ${mensagem ? `<div class="${styles.mensagem}">${mensagem}</div>` : ''}
-              </div>
-              <div class="${styles.staticon}">
-                  <img src="${iconeUrl}" alt="Icone" class="${styles.icone}">
-              </div>
-          </div>
-      `;
+  public async onInit(): Promise<void> {
+    await super.onInit();
+    this.today = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
   }
 
-    protected get dataVersion(): Version {
-        return Version.parse('1.0');
+  public async render(): Promise<void> {
+    this.domElement.innerHTML = `
+      <div class="${styles.aniversariantes}">
+        <div class="${styles.header}">
+          <h2 class="${styles.title}">${this.properties.title || 'Aniversariantes do Mês'}</h2>
+          <p class="${styles.subtitle}">Brasília Segurança 2025</p>
+        </div>
+        <div id="aniversariantesContainer" class="${styles.container}"></div>
+      </div>`;
+
+    try {
+      const aniversariantes = await this.carregarAniversariantes();
+      this.renderizarAniversariantes(aniversariantes);
+
+      if (this.usuariosSemFoto.length > 0) {
+        console.warn(`⚠️ ${this.usuariosSemFoto.length} usuário(s) sem foto no AD.`);
+        console.table(this.usuariosSemFoto);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar aniversariantes:", error);
+      this.mostrarErro(strings.ErrorMessage);
+    }
+  }
+
+  private async carregarAniversariantes(): Promise<IAniversariante[]> {
+    const fromSharePoint = await this.carregarDoSharePoint().catch(() => []);
+    return this.processarAniversariantes(fromSharePoint);
+  }
+
+  private async carregarDoSharePoint(): Promise<IAniversariante[]> {
+    if (!this.properties.listName) return [];
+
+    try {
+      const listUrl = `${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('${encodeURIComponent(this.properties.listName)}')`;
+      const listExists = await this.context.spHttpClient.get(listUrl, SPHttpClient.configurations.v1);
+
+      if (!listExists.ok) throw new Error("Lista não encontrada");
+
+      const url = `${listUrl}/items?$select=Title,field_1,field_2,field_3`;
+      const response = await this.context.spHttpClient.get(url, SPHttpClient.configurations.v1);
+
+      if (!response.ok) throw new Error("Erro ao buscar dados da lista");
+
+      const data = await response.json();
+      return await Promise.all(data.value.map((item: ISPListItem) => this.criarAniversarianteSP(item)));
+    } catch (error) {
+      console.error("Erro ao acessar SharePoint:", error);
+      return [];
+    }
+  }
+
+  private async criarAniversarianteSP(item: ISPListItem): Promise<IAniversariante> {
+    const birthDate = new Date(this.today.getFullYear(), item.field_2 - 1, item.field_1);
+    const diasRestantes = this.calcularDiferencaDias(birthDate);
+    const { mensagem, icone } = this.obterMensagemEIcone(diasRestantes, birthDate);
+
+    const fotoUrl = await this.obterFotoDoUsuario(item.Title);
+
+    return {
+      nome: item.Title,
+      cargo: item.field_3 || strings.DefaultJobTitle,
+      fotoUrl: fotoUrl || this.defaultPhotoUrl,
+      dataAniversario: birthDate,
+      isBirthdayToday: diasRestantes === 0,
+      mensagemAniversario: mensagem,
+      iconeAniversario: icone,
+      diasRestantes: diasRestantes
+    };
+  }
+
+  private async obterFotoDoUsuario(userId: string): Promise<string | null> {
+    try {
+      const tokenProvider = await this.context.aadTokenProviderFactory.getTokenProvider();
+      const token = await tokenProvider.getToken("https://graph.microsoft.com");
+  
+      const response = await fetch(`https://graph.microsoft.com/v1.0/users/${userId}/photo/$value`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          this.usuariosSemFoto.push(userId);
+          return null;
+        } else {
+          console.error(`Erro ao buscar foto de ${userId}: ${response.statusText}`);
+          return null;
+        }
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      const base64 = this.arrayBufferToBase64(arrayBuffer);
+      return `data:image/jpeg;base64,${base64}`;
+    } catch (error) {
+      console.error(`Erro ao obter foto de ${userId}:`, error);
+      return null;
+    }
+  }
+
+  private arrayBufferToBase64(buffer: ArrayBuffer): string {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
+
+  private calcularDiferencaDias(dataAniversario: Date): number {
+    const aniv = new Date(dataAniversario);
+    aniv.setFullYear(this.today.getFullYear());
+
+    if (aniv < this.today) {
+      aniv.setFullYear(this.today.getFullYear() + 1);
     }
 
-    protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-        return {
-            pages: [
-                {
-                    header: {
-                        description: strings.PropertyPaneDescription
-                    },
-                    groups: [
-                        {
-                            groupName: strings.BasicGroupName,
-                            groupFields: [
-                                PropertyPaneTextField('description', {
-                                    label: strings.DescriptionFieldLabel
-                                })
-                            ]
-                        }
-                    ]
-                }
-            ]
-        };
+    const diffTime = aniv.getTime() - this.today.getTime();
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  private obterMensagemEIcone(diasRestantes: number, dataAniversario: Date): { mensagem: string, icone: string } {
+    if (diasRestantes === 0) {
+      return {
+        mensagem: "🎉 Feliz Aniversário!",
+        icone: this.birthdayIconUrl
+      };
     }
+
+    const jaPassouEsteMes = dataAniversario.getMonth() === this.today.getMonth() && 
+                            dataAniversario.getDate() < this.today.getDate();
+
+    if (jaPassouEsteMes) {
+      return {
+        mensagem: "Aproveite seu mês! 😊",
+        icone: this.ellipsisIconUrl
+      };
+    }
+
+    if (diasRestantes === 1) {
+      return {
+        mensagem: "Amanhã é o grande dia!",
+        icone: this.ellipsisIconUrl
+      };
+    } else if (diasRestantes > 1 && diasRestantes <= 7) {
+      return {
+        mensagem: `Faltam ${diasRestantes} dias!`,
+        icone: this.ellipsisIconUrl
+      };
+    } else if (diasRestantes > 7 && dataAniversario.getMonth() === this.today.getMonth()) {
+      return {
+        mensagem: "Ainda este mês...",
+        icone: this.ellipsisIconUrl
+      };
+    }
+
+    return {
+      mensagem: "",
+      icone: ""
+    };
+  }
+
+  private async processarAniversariantes(aniversariantes: IAniversariante[]): Promise<IAniversariante[]> {
+    const comDatasValidas = aniversariantes.filter(a =>
+      a.dataAniversario instanceof Date && !isNaN(a.dataAniversario.getTime())
+    );
+
+    const nomesUnicos = new Set<string>();
+    const unique = comDatasValidas.filter(a => {
+      if (!nomesUnicos.has(a.nome)) {
+        nomesUnicos.add(a.nome);
+        return true;
+      }
+      return false;
+    });
+
+    return unique
+      .filter(a => a.dataAniversario.getMonth() === this.today.getMonth())
+      .sort((a, b) => a.dataAniversario.getDate() - b.dataAniversario.getDate())
+      .slice(0, Math.max(1, Number(this.properties.maxResults) || 5));
+  }
+
+  private renderizarAniversariantes(aniversariantes: IAniversariante[]): void {
+    const container = this.domElement.querySelector('#aniversariantesContainer');
+    if (!container) return;
+
+    if (aniversariantes.length === 0) {
+      container.innerHTML = `<div class="${styles.empty}">${strings.NoBirthdays}</div>`;
+      return;
+    }
+
+    container.innerHTML = aniversariantes.map(pessoa => this.renderCard(pessoa)).join('');
+  }
+
+  private renderCard(pessoa: IAniversariante): string {
+    const dataFormatada = `${pessoa.dataAniversario.getDate().toString().padStart(2, '0')}/$${
+      (pessoa.dataAniversario.getMonth() + 1).toString().padStart(2, '0')
+    }`;
+
+    return `
+      <div class="${styles.card} ${pessoa.isBirthdayToday ? styles.highlight : ''}">
+        <div class="${styles.foto}">
+          <img src="${pessoa.fotoUrl}" alt="${pessoa.nome}" class="${styles.photo}" onerror="this.src='${this.defaultPhotoUrl}'">
+        </div>
+
+        <div class="${styles.info}">
+          <h3 class="${styles.name}">${pessoa.nome}</h3>
+          <p class="${styles.jobTitle}">${pessoa.cargo}</p>
+          <div class="${styles.messageRow}">
+            <p class="${styles.message}">${pessoa.mensagemAniversario}</p>
+            <p class="${styles.date}">${dataFormatada}</p>
+          </div>
+        </div>
+
+        <div class="${styles.lateral}">
+          ${pessoa.iconeAniversario
+            ? `<img src="${pessoa.iconeAniversario}" class="${styles.badge}" alt="Ícone">`
+            : `<span class="${styles.ellipsis}">•••</span>`}
+        </div>
+      </div>`;
+  }
+
+  private mostrarErro(mensagem: string): void {
+    const container = this.domElement.querySelector('#aniversariantesContainer') || this.domElement;
+    container.innerHTML = `<div class="${styles.error}">${mensagem}</div>`;
+  }
+
+  protected get dataVersion(): Version {
+    return Version.parse('1.0');
+  }
+
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    return {
+      pages: [
+        {
+          header: { description: "Configuração da Lista" },
+          groups: [
+            {
+              groupName: "Fonte de dados",
+              groupFields: [
+                PropertyPaneTextField('listName', {
+                  label: "Nome da lista de aniversariantes",
+                  placeholder: "Digite o nome da lista"
+                }),
+                PropertyPaneTextField('maxResults', {
+                  label: "Número máximo de resultados",
+                  value: '5',
+                  description: "Quantidade máxima de aniversariantes a serem exibidos"
+                })
+              ]
+            }
+          ]
+        }
+      ]
+    };
+  }
 }

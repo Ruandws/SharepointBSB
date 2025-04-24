@@ -1,92 +1,166 @@
-Aniversariantes .scss
+.aniversariantesContainer {
+  max-height: 500px; // ou ajuste conforme necessário
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  width: 100%;
+}
+.card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-bottom: 1px;
+  border-left: 4px solid #003e7e;
+  align-items: center;
+  width: 160%;
+  transform: scale(0.85);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  justify-content: space-between;
 
 
+  &:hover {
+    transform: scale(0.9);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+}
 
 .aniversariantes {
+  padding: 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Poppins', sans-serif;
 }
 
-.tituloAniversariantes {
-  font-size: 20px;
-  color: white;
-  font-weight: bold;
-  text-decoration: none;
-  margin-bottom: 5px;
+.header {
+  margin-bottom: 10px;
   text-align: center;
 }
 
-.subTituloAniversariantes {
-  font-size: 14px;
-  color: white;
+.title {
+  font-size: 12px;
   font-weight: bold;
-  text-decoration: none;
-  margin-bottom: 20px;
-  text-align: center;
+  color: #003e7e;
+  margin-bottom: 2px;
 }
 
-.aniversarianteCard {
+.subtitle {
+  font-size: 7.5px;
+  color: #666;
+  font-weight: 500;
+}
+
+.container {
   display: flex;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 8px;
-  width: 312.5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  position: relative;
+  flex-direction: column;
+  gap: 9px;
+  align-items: center;
 }
 
 .foto {
-  width: 49.47px;
-  height: 49.47px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 16px;
-}
-
-.info {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.nome {
-  font-weight: bold;
-  font-size: 10px;
-  color: black;
-  margin-bottom: 4px;
-}
-
-.cargo {
-  font-size: 10px;
-  color: black;
-  opacity: 0.5;
-  margin-bottom: 8px;
-}
-
-.mensagem {
-  font-size: 10px;
-  color: black;
-  display: block;
-}
-
-.staticon {
-  width: 25%;
-  background-color: #e3e9f0 !important;
+  width: 17%;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  border-radius: 0 8px 8px 0;
+  padding: 9px;
 }
 
-.icone {
+.photo {
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
+  background-color: #9e9e9e00;
+  object-fit: cover;
+}
+
+.info {
+  width: 55%;
+  padding-left: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.name {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.jobTitle {
+  font-size: 9px;
+  color: #999;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+.highlight {
+  border-left: 6px solid #ff6b6b;
+  background-color: #fff5f5;
+}
+
+.message {
+  font-size: 10.5px;
+  color: #003e7e;
+  font-weight: 600;
+  margin: 0;
+}
+
+.lateral {
+  width: auto; /* antes: 12.75% */
+  padding: 0 10px;
+  display: flex;
+  justify-content: flex-end; /* alinha à direita */
+  align-items: center;
+  height: 100%;
+  margin-left: auto; /* força o posicionamento à extremidade direita */
+  background-color: transparent; /* se não quiser cor */
+}
+
+.badge {
   width: 24px;
   height: 24px;
+}
+
+.ellipsis {
+  font-size: 25.5px;
+  font-weight: bold;
+  color: #000;
+}
+
+.empty {
+  font-style: italic;
+  color: #999;
+  padding: 9px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  padding: 9px;
+}
+
+.messageRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 3px;
+  gap: 7.5px;
+}
+
+.date {
+  font-size: 10.5px;
+  color: #555;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  background-color: #f0f0f0;
+  padding: 1.5px 6px;
+  border-radius: 9px;
 }

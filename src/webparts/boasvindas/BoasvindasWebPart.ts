@@ -29,10 +29,13 @@ export default class BoasVindasWebPart extends BaseClientSideWebPart<{}> {
 
   public async render(): Promise<void> {
     const userName = await this.getCurrentUser();
-
+  
+    const pageTitle = document.title || "Página Atual"; // ou defina manualmente
+  
     this.domElement.innerHTML = `
       <section class="${styles.banner}">
         <div class="${styles.textContainer}">
+          <h2 class="${styles.pageTitle}">${pageTitle}</h2>
           <h1 class="${styles.welcomeText}">Bem-vindo, ${userName}</h1>
           <p class="${styles.subText}">Brasília Segurança S/A <br> 2025</p>
         </div>

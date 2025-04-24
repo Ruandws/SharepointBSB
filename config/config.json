@@ -33,14 +33,23 @@
           "manifest": "./src/webparts/menu/MenuWebPart.manifest.json"
         }
       ]
+    },
+    "dashboard-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/dashboard/DashboardWebPart.js",
+          "manifest": "./src/webparts/dashboard/DashboardWebPart.manifest.json"
+        }
+      ]
     }
   },
-  
   "externals": {},
   "localizedResources": {
     "DiretorioWebPartStrings": "lib/webparts/diretorio/loc/{locale}.js",
     "Aniversariantes2WebPartStrings": "lib/webparts/aniversariantes2/loc/{locale}.js",
     "BoasvindasWebPartStrings": "lib/webparts/boasvindas/loc/{locale}.js",
-    "MenuWebPartStrings": "lib/webparts/menu/loc/{locale}.js"
+    "MenuWebPartStrings": "lib/webparts/menu/loc/{locale}.js",
+    "MuralAniversariantesWebPartStrings": "lib/webparts/muralAniversariantes/loc/{locale}.js",
+    "DashboardWebPartStrings": "lib/webparts/dashboard/loc/{locale}.js"
   }
 }

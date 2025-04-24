@@ -11,6 +11,19 @@ declare interface IAniversariantes2WebPartStrings {
   AppOfficeEnvironment: string;
   AppOutlookEnvironment: string;
   UnknownEnvironment: string;
+  DefaultTitle: string;
+  DefaultJobTitle: string;
+  ErrorMessage: string;
+  SPListError: string;
+  NoBirthdays: string;
+  BirthdayAltText: string;
+  PropertyPaneDescription: string;
+  BasicGroupName: string;
+  TitleFieldLabel: string;
+  TitlePlaceholder: string;
+  ListNameFieldLabel: string;
+  ListNameDescription: string;
+  MaxResultsFieldLabel: string;
 }
 
 declare module 'Aniversariantes2WebPartStrings' {
